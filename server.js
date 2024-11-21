@@ -1,7 +1,11 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 
 dotenv.config(); // Load environment variables from .env file
+
+app.use(cors()); // Enable CORS for all routes
+app.use(express.json()); // Middleware to parse JSON bodies
 
 const app = express();
 const PORT = process.env.PORT || 3000; // Use the port from environment variables or default to 3000
