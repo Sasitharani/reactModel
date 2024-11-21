@@ -1,15 +1,18 @@
 import express from 'express';
-import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
+import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { db } from './db.js'; // Import the database connection
-import cors from 'cors';
+
+dotenv.config(); // Load environment variables from .env file
+
+const app = express(); // Initialize app
+const PORT = process.env.PORT || 5000; // Use the port from environment variables or default to 5000
 
 app.use(cors()); // Enable CORS for all routes
-const app = express();
-
-app.use(bodyParser.json());
+app.use(express.json()); // Middleware to parse JSON bodies
 
 // Log when the server starts
 console.log('Server is starting...');
@@ -83,7 +86,6 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT} checking for mysql :(`);
+  console.log(`Server is running on port ${PORT} to check sql :()`);
 });
