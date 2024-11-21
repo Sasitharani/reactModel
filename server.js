@@ -4,7 +4,7 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { db } from './db.js'; // Import the database connection
+import { db } from './db.js'; // Import the database connection pool
 
 dotenv.config(); // Load environment variables from .env file
 
