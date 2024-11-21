@@ -6,7 +6,7 @@ function App() {
   const [formData, setFormData] = useState({ name: '', email: '', age: '' });
 
   useEffect(() => {
-    fetch('/api/users')
+    fetch('https://reactmodel.onrender.com/api/users')
       .then((response) => response.json())
       .then((data) => setValues(data))
       .catch((error) => console.error('Error fetching data:', error));
@@ -93,58 +93,77 @@ function App() {
     <div className="flex flex-col items-center space-y-4 mt-4">
       <h1 className="text-center text-2xl font-bold">User Management</h1>
       <form className="flex flex-col items-center space-y-4" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          className="border border-gray-300 p-2 rounded"
-          placeholder="Name"
-        />
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          className="border border-gray-300 p-2 rounded"
-          placeholder="Email"
-        />
-        <input
-          type="number"
-          name="age"
-          value={formData.age}
-          onChange={handleChange}
-          className="border border-gray-300 p-2 rounded"
-          placeholder="Age"
-        />
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded">
-          Submit
-        </button>
+        <table className="min-w-full bg-white border border-gray-300">
+          <thead>
+            <tr>
+              <th className="py-2 px-4 border-b">Name</th>
+              <th className="py-2 px-4 border-b">Email</th>
+              <th className="py-2 px-4 border-b">Age</th>
+              <th className="py-2 px-4 border-b">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {values.map((user) => (
+              <tr key={user.id}>
+                <td className="py-2 px-4 border-b">{user.name}</td>
+                <td className="py-2 px-4 border-b">{user.email}</td>
+                <td className="py-2 px-4 border-b">{user.age}</td>
+                <td className="py-2 px-4 border-b">
+                  <button
+                    onClick={() => handleUpdate(user.id)}
+                    className="bg-yellow-500 text-white px-2 py-1 rounded mr-2"
+                  >
+                    Update
+                  </button>
+                  <button
+                    onClick={() => handleDelete(user.id)}
+                    className="bg-red-500 text-white px-2 py-1 rounded"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+            <tr>
+              <td className="py-2 px-4 border-b">
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="border border-gray-700 bg-gray-200 p-2 rounded w-full"
+                  placeholder="Name"
+                />
+              </td>
+              <td className="py-2 px-4 border-b">
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="border border-gray-700 bg-gray-200 p-2 rounded w-full"
+                  placeholder="Email"
+                />
+              </td>
+              <td className="py-2 px-4 border-b">
+                <input
+                  type="number"
+                  name="age"
+                  value={formData.age}
+                  onChange={handleChange}
+                  className="border border-gray-700 bg-gray-200 p-2 rounded w-full"
+                  placeholder="Age"
+                />
+              </td>
+              <td className="py-2 px-4 border-b">
+                <button type="submit" className="bg-blue-500 text-white px-2 py-1 rounded">
+                  Add
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </form>
-      <button onClick={handleViewAll} className="bg-green-500 text-white p-2 rounded mt-4">
-        View All Users
-      </button>
-      <div className="mt-4">
-        {values.map((user) => (
-          <div key={user.id} className="flex flex-col items-center space-y-2">
-            <p>{user.name}</p>
-            <p>{user.email}</p>
-            <p>{user.age}</p>
-            <button
-              onClick={() => handleUpdate(user.id)}
-              className="bg-yellow-500 text-white p-2 rounded"
-            >
-              Update
-            </button>
-            <button
-              onClick={() => handleDelete(user.id)}
-              className="bg-red-500 text-white p-2 rounded"
-            >
-              Delete
-            </button>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }
