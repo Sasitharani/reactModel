@@ -5,11 +5,10 @@ dotenv.config(); // Load environment variables from .env file
 
 // Create a connection to the database
 const connection = mysql.createConnection({
-  host: process.env.DB_HOST, // Use environment variable for host
-  user: process.env.DB_USER, // Use environment variable for user
-  password: process.env.DB_PASSWORD, // Use environment variable for password
-  database: process.env.DB_NAME, // Use environment variable for database name
-  port: 3306 // Specify the port number
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
 
 // Connect to the database
