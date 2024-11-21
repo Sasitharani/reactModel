@@ -4,6 +4,7 @@ import './App.css';
 function App() {
   const [values, setValues] = useState([]);
   const [formData, setFormData] = useState({ name: '', email: '', age: '' });
+  const [editId, setEditId] = useState(null); // State to track the row being edited
 
   useEffect(() => {
     fetch('https://reactmodel.onrender.com/api/users')
@@ -39,7 +40,13 @@ function App() {
     }
   };
 
-  const handleUpdate = async (id) => {
+  const handleEdit = (user) => {
+    setEditId(user.id);
+    setFormData({ name: user.name, email: user.email, age: user.age });
+  };
+
+  const handleUpdate = async (event, id) => {
+    event.preventDefault();
     try {
       const response = await fetch(`https://reactmodel.onrender.com/api/users/${id}`, {
         method: 'PUT',
@@ -52,6 +59,7 @@ function App() {
         const updatedUser = await response.json();
         setValues(values.map((user) => (user.id === id ? updatedUser : user)));
         setFormData({ name: '', email: '', age: '' });
+        setEditId(null); // Reset editId after updating
       } else {
         console.error('Failed to update data');
       }
@@ -91,23 +99,65 @@ function App() {
           <tbody>
             {values.map((user) => (
               <tr key={user.id}>
-                <td className="py-2 px-4 border-b">{user.name}</td>
-                <td className="py-2 px-4 border-b">{user.email}</td>
-                <td className="py-2 px-4 border-b">{user.age}</td>
-                <td className="py-2 px-4 border-b">
-                  <button
-                    onClick={() => handleUpdate(user.id)}
-                    className="bg-yellow-500 text-white px-2 py-1 rounded mr-2"
-                  >
-                    Update
-                  </button>
-                  <button
-                    onClick={() => handleDelete(user.id)}
-                    className="bg-red-500 text-white px-2 py-1 rounded"
-                  >
-                    Delete
-                  </button>
-                </td>
+                {editId === user.id ? (
+                  <>
+                    <td className="py-2 px-4 border-b">
+                      <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        className="border border-gray-700 bg-gray-200 p-2 rounded w-full"
+                      />
+                    </td>
+                    <td className="py-2 px-4 border-b">
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        className="border border-gray-700 bg-gray-200 p-2 rounded w-full"
+                      />
+                    </td>
+                    <td className="py-2 px-4 border-b">
+                      <input
+                        type="number"
+                        name="age"
+                        value={formData.age}
+                        onChange={handleChange}
+                        className="border border-gray-700 bg-gray-200 p-2 rounded w-full"
+                      />
+                    </td>
+                    <td className="py-2 px-4 border-b">
+                      <button
+                        onClick={(event) => handleUpdate(event, user.id)}
+                        className="bg-blue-500 text-white px-2 py-1 rounded"
+                      >
+                        Update
+                      </button>
+                    </td>
+                  </>
+                ) : (
+                  <>
+                    <td className="py-2 px-4 border-b">{user.name}</td>
+                    <td className="py-2 px-4 border-b">{user.email}</td>
+                    <td className="py-2 px-4 border-b">{user.age}</td>
+                    <td className="py-2 px-4 border-b">
+                      <button
+                        onClick={() => handleEdit(user)}
+                        className="bg-yellow-500 text-white px-2 py-1 rounded mr-2"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(user.id)}
+                        className="bg-red-500 text-white px-2 py-1 rounded"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </>
+                )}
               </tr>
             ))}
             <tr>
