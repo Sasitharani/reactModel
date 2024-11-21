@@ -32,11 +32,20 @@ app.post('/api/users', (req, res) => {
   });
 });
 
-// Read all users
+// Read users by name
+// Read users by name
 app.get('/api/users', (req, res) => {
   console.log('GET /api/users endpoint hit');
-  const query = 'SELECT * FROM users';
-  db.query(query, (err, results) => {
+  const { name } = req.query; // Get the username from query parameters
+  let query = 'SELECT * FROM users';
+  const queryParams = [];
+
+  if (name && name.trim() !== '') { // Check if name is defined and not empty
+    query += ' WHERE name = ?';
+    queryParams.push(name);
+  }
+
+  db.query(query, queryParams, (err, results) => {
     if (err) {
       console.error('Error fetching data:', err);
       res.status(500).send('Error fetching data');
@@ -45,6 +54,7 @@ app.get('/api/users', (req, res) => {
     res.status(200).send(results);
   });
 });
+
 
 // Update a user
 app.put('/api/users/:id', (req, res) => {
