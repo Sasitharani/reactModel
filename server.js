@@ -11,6 +11,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/message', (req, res) => {
+  console.log("Api Hit")
   res.json({ message: 'Hello from the server!' });
 });
 
