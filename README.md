@@ -18,4 +18,6 @@ Currently, two official plugins are available:
 
 ## for database using SQL databse from godaddy hosting
 
-##npm install mysql2
+## npm install mysql2
+
+## the server of the db only runs in rendre https://reactmodel.onrender.com
