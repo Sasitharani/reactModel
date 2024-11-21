@@ -75,20 +75,6 @@ function App() {
     }
   };
 
-  const handleViewAll = async () => {
-    try {
-      const response = await fetch('https://reactmodel.onrender.com/api/users');
-      if (response.ok) {
-        const data = await response.json();
-        setValues(data);
-      } else {
-        console.error('Failed to fetch data');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
   return (
     <div className="flex flex-col items-center space-y-4 mt-4">
       <h1 className="text-center text-2xl font-bold">User Management</h1>
